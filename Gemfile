@@ -16,7 +16,7 @@ gem 'erubis'
 gem 'stripe' #, source: 'https://code.stripe.com/'
 gem 'terrapin'
 gem 'sass', require: nil
-gem 'dav4rack', git: 'https://github.com/neocities/dav4rack.git', ref: '3ecde122a0b8bcc1d85581dc85ef3a7120b6a8f0'
+gem 'dav4rack', git: 'https://github.com/neocities/dav4rack.git', ref: '89f106820fffdc2c088abefb6f6856a5742a7250'
 gem 'filesize'
 gem 'thread'
 gem 'rack-cache'
