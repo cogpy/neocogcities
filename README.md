@@ -26,6 +26,16 @@ bundle exec rackup -o 0.0.0.0
 
 Now you can access the running site from your browser: http://127.0.0.1:9292
 
+## Documentation
+
+For comprehensive technical documentation, see the [docs](./docs) directory:
+
+- **[Technical Architecture](./docs/ARCHITECTURE.md)** - Complete system architecture with Mermaid diagrams
+- **[API Documentation](./docs/API.md)** - REST API and WebDAV interface documentation
+- **[Database Schema](./docs/DATABASE.md)** - Database design and relationships
+- **[Security Architecture](./docs/SECURITY.md)** - Security controls and best practices
+- **[Deployment Guide](./docs/DEPLOYMENT.md)** - Infrastructure and deployment procedures
+
 ## Want to contribute?
 
 If you'd like to fix a bug, or make an improvement, or add a new feature, it's easy! Just send us a Pull Request.
@@ -35,3 +45,5 @@ If you'd like to fix a bug, or make an improvement, or add a new feature, it's e
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+Please read the [Technical Architecture documentation](./docs/ARCHITECTURE.md) to understand the codebase structure and development guidelines before contributing.
