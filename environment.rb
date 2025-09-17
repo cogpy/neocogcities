@@ -1,5 +1,7 @@
 # frozen_string_literal: true
-RubyVM::YJIT.enable
+if defined?(RubyVM::YJIT)
+  RubyVM::YJIT.enable
+end
 ENV['RACK_ENV'] ||= 'development'
 ENV['TZ'] = 'UTC'
 DIR_ROOT = File.expand_path File.dirname(__FILE__)

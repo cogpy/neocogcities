@@ -26,6 +26,7 @@ files/banned_email_blacklist.conf
 files/letsencrypt.key
 files/tor.txt
 .bundle
+vendor/bundle
 ext/black_box.rb
 files/trumpplan.txt
 public/sitemap
