@@ -1,0 +1,131 @@
+<div class="content center">
+  <h1>Atom Details</h1>
+  
+  <div class="atom-info">
+    <h2><%= @atom.type_name %>: <%= @atom.name || "ID #{@atom.id}" %></h2>
+    
+    <table class="atom-details-table">
+      <tr>
+        <th>ID:</th>
+        <td><%= @atom.id %></td>
+      </tr>
+      <tr>
+        <th>Type:</th>
+        <td><%= @atom.atom_type %> (<%= @atom.type_name %>)</td>
+      </tr>
+      <% if @atom.name %>
+      <tr>
+        <th>Name:</th>
+        <td><%= @atom.name %></td>
+      </tr>
+      <% end %>
+      <% if @atom.value %>
+      <tr>
+        <th>Value:</th>
+        <td><pre><%= @atom.parsed_value.inspect %></pre></td>
+      </tr>
+      <% end %>
+      <tr>
+        <th>Truth Value:</th>
+        <td>Strength: <%= @atom.truth_value_strength %>, Confidence: <%= @atom.truth_value_confidence %></td>
+      </tr>
+      <tr>
+        <th>Attention Value:</th>
+        <td>STI: <%= @atom.attention_value_sti %>, LTI: <%= @atom.attention_value_lti %></td>
+      </tr>
+      <tr>
+        <th>Created:</th>
+        <td><%= @atom.created_at %></td>
+      </tr>
+      <tr>
+        <th>Updated:</th>
+        <td><%= @atom.updated_at %></td>
+      </tr>
+    </table>
+    
+    <div class="atom-representation">
+      <h3>Atom Representation</h3>
+      <pre><%= @atom.to_s %></pre>
+    </div>
+    
+    <% if @atom.link? && @outgoing.any? %>
+      <div class="outgoing-atoms">
+        <h3>Outgoing Atoms (<%= @outgoing.length %>)</h3>
+        <ul>
+          <% @outgoing.each do |out_atom| %>
+            <li>
+              <a href="/dashboard/atomspace/atoms/<%= out_atom.id %>">
+                <%= out_atom.to_s %>
+              </a>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    
+    <% if @incoming.any? %>
+      <div class="incoming-atoms">
+        <h3>Incoming Links (<%= @incoming.length %>)</h3>
+        <ul>
+          <% @incoming.each do |in_atom| %>
+            <li>
+              <a href="/dashboard/atomspace/atoms/<%= in_atom.id %>">
+                <%= in_atom.to_s %>
+              </a>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  </div>
+  
+  <p>
+    <a href="/dashboard/atomspace" class="btn-Action">Back to AtomSpace</a>
+  </p>
+</div>
+
+<style>
+.atom-details-table {
+  width: 100%;
+  max-width: 800px;
+  margin: 20px 0;
+  border-collapse: collapse;
+}
+.atom-details-table th,
+.atom-details-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+.atom-details-table th {
+  background-color: #f5f5f5;
+  font-weight: bold;
+  width: 200px;
+}
+.atom-representation {
+  margin: 20px 0;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+}
+.atom-representation pre {
+  font-family: monospace;
+  font-size: 14px;
+}
+.outgoing-atoms,
+.incoming-atoms {
+  margin: 20px 0;
+}
+.outgoing-atoms ul,
+.incoming-atoms ul {
+  list-style: none;
+  padding: 0;
+}
+.outgoing-atoms li,
+.incoming-atoms li {
+  padding: 5px 0;
+  margin: 5px 0;
+  padding-left: 20px;
+  border-left: 3px solid #0066cc;
+}
+</style>

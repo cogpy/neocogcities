@@ -1,0 +1,143 @@
+<div class="content center">
+  <h1><%= @site.username %>'s AtomSpace</h1>
+  
+  <% if @site.description %>
+    <p class="site-description"><%= @site.description %></p>
+  <% end %>
+  
+  <div class="atomspace-stats">
+    <h2>Knowledge Base Statistics</h2>
+    <ul>
+      <li><strong>Total Atoms:</strong> <%= @stats[:total_atoms] %></li>
+      <li><strong>Nodes:</strong> <%= @stats[:node_count] %></li>
+      <li><strong>Links:</strong> <%= @stats[:link_count] %></li>
+    </ul>
+    
+    <% if @stats[:type_distribution].any? %>
+      <h3>Knowledge Types</h3>
+      <ul>
+        <% @stats[:type_distribution].take(10).each do |type, count| %>
+          <li><strong><%= type %>:</strong> <%= count %></li>
+        <% end %>
+      </ul>
+    <% end %>
+  </div>
+  
+  <% if @atoms.any? %>
+    <div class="public-atoms">
+      <h2><%= @is_owner ? 'All Atoms' : 'Public Knowledge' %></h2>
+      
+      <table class="atomspace-table">
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Name</th>
+            <th>Representation</th>
+            <th>Created</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @atoms.take(50).each do |atom| %>
+            <tr>
+              <td><%= atom.type_name %></td>
+              <td><%= atom.name || '(link)' %></td>
+              <td><code><%= atom.to_s %></code></td>
+              <td><%= atom.created_at.ago %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      
+      <% if @atoms.length > 50 %>
+        <p><em>Showing first 50 atoms of <%= @atoms.length %> total</em></p>
+      <% end %>
+    </div>
+  <% else %>
+    <p>
+      <%= @is_owner ? 'Your atomspace is empty. Start adding knowledge!' : 'No public knowledge available.' %>
+    </p>
+  <% end %>
+  
+  <div class="site-actions">
+    <% if @is_owner %>
+      <a href="/dashboard/atomspace" class="btn-Action">Manage AtomSpace</a>
+    <% end %>
+    <a href="<%= @site.uri %>" class="btn-Action">Visit Site</a>
+    <a href="/browse/agents" class="btn-Action">Browse Other Agents</a>
+  </div>
+  
+  <div class="about-atomspace">
+    <h2>About This Agent's AtomSpace</h2>
+    <p>
+      This is <%= @site.username %>'s distributed knowledge base, powered by an AtomSpace 
+      implementation inspired by OpenCog. The AtomSpace stores knowledge as a hypergraph
+      of atoms (nodes and links), enabling complex reasoning and knowledge sharing.
+    </p>
+    <% unless @is_owner %>
+      <p>
+        Only public knowledge is shown here. The agent owner can share specific atoms 
+        publicly or with other agents for distributed cognition.
+      </p>
+    <% end %>
+  </div>
+</div>
+
+<style>
+.site-description {
+  font-size: 1.1em;
+  margin: 20px 0;
+  padding: 15px;
+  background-color: #f0f8ff;
+  border-left: 4px solid #0066cc;
+}
+.atomspace-stats {
+  margin: 30px 0;
+}
+.atomspace-stats ul {
+  list-style: none;
+  padding: 0;
+}
+.atomspace-stats li {
+  padding: 5px 0;
+}
+.public-atoms {
+  margin: 30px 0;
+}
+.atomspace-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+.atomspace-table th,
+.atomspace-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+.atomspace-table th {
+  background-color: #f5f5f5;
+  font-weight: bold;
+}
+.atomspace-table code {
+  font-family: monospace;
+  background-color: #f5f5f5;
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-size: 0.9em;
+}
+.site-actions {
+  margin: 30px 0;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.about-atomspace {
+  margin: 40px 0;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+.about-atomspace h2 {
+  margin-top: 0;
+}
+</style>

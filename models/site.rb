@@ -198,6 +198,12 @@ class Site < Sequel::Model
 
   one_to_many :tips
   one_to_many :tippings, key: :actioning_site_id, class: :Tip
+  
+  # AtomSpace for agent cognition
+  one_to_many :atoms
+  one_to_many :atomspace_queries
+  one_to_many :shared_atoms_out, key: :source_site_id, class: :AtomspaceShare
+  one_to_many :shared_atoms_in, key: :target_site_id, class: :AtomspaceShare
 
   one_to_many :blocks
   one_to_many :blockings, key: :actioning_site_id, class: :Block
@@ -1950,6 +1956,23 @@ class Site < Sequel::Model
     generate_thumbnail_or_screenshot relative_path, SCREENSHOT_DELAY_SECONDS
 
     true
+  end
+  
+  # Get the AtomSpace instance for this agent/site
+  def atomspace
+    @atomspace ||= AtomSpace.new(self.id)
+  end
+  
+  # Check if this site is configured as an agent
+  def agent?
+    # An agent site has atoms in its atomspace
+    atoms_dataset.count > 0
+  end
+  
+  # Get agent stats
+  def agent_stats
+    return nil unless agent?
+    atomspace.stats
   end
 end
 
