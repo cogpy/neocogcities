@@ -1,0 +1,152 @@
+<div class="content center">
+  <h1>AtomSpace - Agent Knowledge Base</h1>
+  
+  <div class="atomspace-stats">
+    <h2>Statistics</h2>
+    <ul>
+      <li><strong>Total Atoms:</strong> <%= @stats[:total_atoms] %></li>
+      <li><strong>Nodes:</strong> <%= @stats[:node_count] %></li>
+      <li><strong>Links:</strong> <%= @stats[:link_count] %></li>
+      <li><strong>Knowledge Shared Out:</strong> <%= @stats[:shared_out] %></li>
+      <li><strong>Knowledge Shared In:</strong> <%= @stats[:shared_in] %></li>
+    </ul>
+    
+    <% if @stats[:type_distribution].any? %>
+      <h3>Atom Types</h3>
+      <ul>
+        <% @stats[:type_distribution].each do |type, count| %>
+          <li><strong><%= type %>:</strong> <%= count %></li>
+        <% end %>
+      </ul>
+    <% end %>
+  </div>
+  
+  <div class="atomspace-actions">
+    <h2>Quick Actions</h2>
+    
+    <div class="action-section">
+      <h3>Create a Concept Node</h3>
+      <form method="post" action="/dashboard/atomspace/nodes">
+        <input type="hidden" name="csrf_token" value="<%= csrf_token %>">
+        <input type="hidden" name="type_name" value="ConceptNode">
+        <label>Name: <input type="text" name="name" required></label>
+        <label>Value (optional): <input type="text" name="value"></label>
+        <button type="submit">Create Node</button>
+      </form>
+    </div>
+    
+    <div class="action-section">
+      <h3>Create a Knowledge Triple</h3>
+      <form method="post" action="/dashboard/atomspace/triples">
+        <input type="hidden" name="csrf_token" value="<%= csrf_token %>">
+        <label>Subject: <input type="text" name="subject" required placeholder="e.g., Alice"></label>
+        <label>Predicate: <input type="text" name="predicate" required placeholder="e.g., knows"></label>
+        <label>Object: <input type="text" name="object" required placeholder="e.g., Bob"></label>
+        <button type="submit">Create Triple</button>
+      </form>
+    </div>
+    
+    <p>
+      <a href="/dashboard/atomspace/query" class="btn-Action">Advanced Query</a>
+      <a href="/api/atomspace/export" class="btn-Action">Export AtomSpace</a>
+    </p>
+  </div>
+  
+  <div class="recent-atoms">
+    <h2>Recent Atoms</h2>
+    
+    <% if @recent_atoms.any? %>
+      <table class="atomspace-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Type</th>
+            <th>Name</th>
+            <th>Created</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @recent_atoms.each do |atom| %>
+            <tr>
+              <td><%= atom.id %></td>
+              <td><%= atom.type_name %></td>
+              <td><%= atom.name || '(link)' %></td>
+              <td><%= atom.created_at.ago %></td>
+              <td>
+                <a href="/dashboard/atomspace/atoms/<%= atom.id %>">View</a>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <p>No atoms yet. Create your first concept node or knowledge triple above!</p>
+    <% end %>
+  </div>
+  
+  <div class="atomspace-info">
+    <h2>About AtomSpace</h2>
+    <p>
+      AtomSpace is a knowledge representation system inspired by OpenCog. 
+      It allows you to store and query knowledge as a hypergraph of atoms.
+      Each atom can be a <strong>Node</strong> (a concept) or a <strong>Link</strong> (a relationship between atoms).
+    </p>
+    <p>
+      Use the API at <code>/api/atomspace/*</code> to programmatically interact with your agent's knowledge base.
+      Share knowledge with other agents, query complex patterns, and build distributed cognition systems.
+    </p>
+    <p>
+      <a href="https://wiki.opencog.org/w/AtomSpace" target="_blank">Learn more about AtomSpace</a>
+    </p>
+  </div>
+</div>
+
+<style>
+.atomspace-stats ul {
+  list-style: none;
+  padding: 0;
+}
+.atomspace-stats li {
+  padding: 5px 0;
+}
+.action-section {
+  margin: 20px 0;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.action-section form {
+  margin: 10px 0;
+}
+.action-section label {
+  display: block;
+  margin: 10px 0;
+}
+.action-section input[type="text"] {
+  width: 100%;
+  max-width: 400px;
+  padding: 5px;
+}
+.atomspace-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+.atomspace-table th,
+.atomspace-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+.atomspace-table th {
+  background-color: #f5f5f5;
+  font-weight: bold;
+}
+.atomspace-info {
+  margin: 30px 0;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-left: 4px solid #0066cc;
+}
+</style>

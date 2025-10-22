@@ -1,0 +1,126 @@
+<div class="content center">
+  <h1>Query AtomSpace</h1>
+  
+  <div class="query-form">
+    <form method="get" action="/dashboard/atomspace/query">
+      <div class="form-group">
+        <label>Type Name:
+          <select name="type_name">
+            <option value="">All Types</option>
+            <optgroup label="Nodes">
+              <option value="ConceptNode">ConceptNode</option>
+              <option value="PredicateNode">PredicateNode</option>
+              <option value="VariableNode">VariableNode</option>
+              <option value="NumberNode">NumberNode</option>
+              <option value="AgentNode">AgentNode</option>
+            </optgroup>
+            <optgroup label="Links">
+              <option value="InheritanceLink">InheritanceLink</option>
+              <option value="SimilarityLink">SimilarityLink</option>
+              <option value="EvaluationLink">EvaluationLink</option>
+              <option value="ListLink">ListLink</option>
+              <option value="ImplicationLink">ImplicationLink</option>
+            </optgroup>
+          </select>
+        </label>
+      </div>
+      
+      <div class="form-group">
+        <label>Name (contains):
+          <input type="text" name="name" value="<%= params[:name] %>">
+        </label>
+      </div>
+      
+      <button type="submit" class="btn-Action">Search</button>
+    </form>
+  </div>
+  
+  <% if defined?(@results) %>
+    <div class="query-results">
+      <h2>Results (<%= @results.length %>)</h2>
+      
+      <% if @results.any? %>
+        <table class="atomspace-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Type</th>
+              <th>Name</th>
+              <th>Representation</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @results.each do |atom| %>
+              <tr>
+                <td><%= atom.id %></td>
+                <td><%= atom.type_name %></td>
+                <td><%= atom.name || '(link)' %></td>
+                <td><code><%= atom.to_s %></code></td>
+                <td>
+                  <a href="/dashboard/atomspace/atoms/<%= atom.id %>">View</a>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <p>No results found.</p>
+      <% end %>
+    </div>
+  <% end %>
+  
+  <p>
+    <a href="/dashboard/atomspace" class="btn-Action">Back to AtomSpace</a>
+  </p>
+</div>
+
+<style>
+.query-form {
+  margin: 20px 0;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+.form-group {
+  margin: 15px 0;
+}
+.form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+.form-group input[type="text"],
+.form-group select {
+  width: 100%;
+  max-width: 400px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+.query-results {
+  margin: 30px 0;
+}
+.atomspace-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+.atomspace-table th,
+.atomspace-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+.atomspace-table th {
+  background-color: #f5f5f5;
+  font-weight: bold;
+}
+.atomspace-table code {
+  font-family: monospace;
+  background-color: #f5f5f5;
+  padding: 2px 5px;
+  border-radius: 3px;
+}
+</style>
